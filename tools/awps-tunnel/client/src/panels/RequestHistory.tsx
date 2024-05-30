@@ -7,7 +7,9 @@ import { useDataContext } from "../providers/DataContext";
 import { HttpHistoryItem } from "../models";
 import { Button, Table, TableBody, TableRow, TableCell, TableCellLayout } from "@fluentui/react-components";
 import { bundleIcon, Delete24Filled, Delete24Regular } from "@fluentui/react-icons";
-import ReactJson from "react-json-view";
+import JSONInput from "react-json-editor-ajrm/index";
+// @ts-ignore, dependency for library, don't remove
+import locale from "react-json-editor-ajrm/locale/en";
 
 import { Dialog, DialogTrigger, DialogSurface, DialogTitle, DialogBody, DialogActions, DialogContent } from "@fluentui/react-components";
 
@@ -132,7 +134,17 @@ const renderContent = (message: { headers: Record<string, string>, content: stri
   if (message.contentType.toLowerCase() === "application/json" || message.contentType.toLowerCase() === "text/json") {
     try {
       const parsedJson = JSON.parse(message.content);
-      return <div><ReactJson src={parsedJson} collapsed={1} name={"body"}/></div>;
+      return <div><JSONInput locale={locale}
+                             placeholder={parsedJson}
+                             colors={{
+                               default: "black",
+                               background: "white",
+                               keys: "#8b1853",
+                               string: "#4a50a3",
+                               colon: "black"
+                             }} height={"auto"} viewOnly={true}
+                             confirmGood={false}/>
+      </div>;
     } catch (error) {
     }
   }
